@@ -8,5 +8,3 @@ Web applications for conducting online polls and surveys.
 
 [Requirements](../../wiki/Requirements)
 
-Iterations
-* [Iteration 1 Plan](../../wiki/Iteration%201%20Plan) and [Task Board](../../projects/1)
