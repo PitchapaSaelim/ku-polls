@@ -5,7 +5,10 @@
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li><br>
+        <br> <a href="{% url 'polls:detail' question.id %}"> <button class="vote_button" {% if not question.can_vote %} disabled {% endif %} >Vote</button> </a>
+        <br> <a href="{% url 'polls:results' question.id %}"> <button class="result_button">Result</button> </a>
+
     {% endfor %}
     </ul>
 {% else %}
