@@ -20,13 +20,13 @@ class Question(models.Model):
 
     def is_published(self):
         now = timezone.now()
-        if (now >= self.pub_date):
+        if now >= self.pub_date:
             return True
         return False
 
     def can_vote(self):
         now = timezone.now()
-        if (now <= self.end_date):
+        if now <= self.end_date and now >= self.pub_date:
             return True
         return False
 
