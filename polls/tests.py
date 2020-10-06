@@ -51,19 +51,22 @@ class QuestionModelTests(TestCase):
     def test_can_vote_with_current_date_is_before_end_date(self):
         """can_vote() returns True if voting is currently allowed for this question before the end date."""
         time = timezone.now() + datetime.timedelta(hours=23, minutes=59, seconds=59)
-        recent_question = Question(end_date=time)
+        pub_time = timezone.now() - datetime.timedelta(days=5)
+        recent_question = Question(pub_date=pub_time, end_date=time)
         self.assertIs(recent_question.can_vote(), True)
 
     def test_can_vote_with_current_date_is_on_end_date(self):
         """can_vote() returns True if voting is currently allowed for this question on the end date."""
         time = timezone.now()
-        recent_question = Question(end_date=time)
+        pub_time = timezone.now() - datetime.timedelta(days=5)
+        recent_question = Question(pub_date=pub_time, end_date=time)
         self.assertIs(recent_question.can_vote(), True)
 
     def test_can_vote_with_current_date_is_after_end_date(self):
         """can_vote() returns False if voting is currently allowed for this question after the end date."""
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
-        recent_question = Question(end_date=time)
+        pub_time = timezone.now() - datetime.timedelta(days=5)
+        recent_question = Question(pub_date=pub_time, end_date=time)
         self.assertIs(recent_question.can_vote(), False)
 
 
