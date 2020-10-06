@@ -76,7 +76,7 @@ def create_question(question_text, days):
     """
     time_of_pub_date = timezone.now() + datetime.timedelta(days=days)
     time_of_end_date = datetime.timedelta(
-        hours=23, minutes=59, seconds=59) + time_of_pub_date
+        days=30) + time_of_pub_date
     return Question.objects.create(question_text=question_text, pub_date=time_of_pub_date, end_date=time_of_end_date)
 
 
