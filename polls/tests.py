@@ -55,13 +55,6 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time_of_pub_date, end_date=time)
         self.assertIs(recent_question.can_vote(), True)
 
-    def test_can_vote_with_current_date_is_on_end_date(self):
-        """can_vote() returns True if voting is currently allowed for this question on the end date."""
-        time = timezone.now()
-        time_of_pub_date = timezone.now() - datetime.timedelta(days=5)
-        recent_question = Question(pub_date=time_of_pub_date, end_date=time)
-        self.assertIs(recent_question.can_vote(), True)
-
     def test_can_vote_with_current_date_is_after_end_date(self):
         """can_vote() returns False if voting is currently allowed for this question after the end date."""
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
