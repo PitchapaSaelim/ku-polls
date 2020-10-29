@@ -7,7 +7,7 @@
 <h1>{{ question.question_text }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
+{% if already_voted %}<p><strong> {{user.username}}' previous choice is {{ previous_choice }}.</strong></p>{% endif %}
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 {% for choice in question.choice_set.all %}

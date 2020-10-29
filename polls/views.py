@@ -68,8 +68,14 @@ def vote(request, question_id):
 def vote_for_poll(request, pk):
     """Show error messages when the question not allowed to vote or render question detail page when it can."""
     question = get_object_or_404(Question, pk=pk)
+    already_voted = False
     if not question.can_vote():
         messages.error(request, "Voting is not allowed.")
         return redirect('polls:index')
+    try:
+        previous_choice = Vote.objects.filter(user=request.user, question=question).first().choice.choice_text
+        already_voted = True
+    except (AttributeError):
+        return render(request, 'polls/detail.html', {'question': question})
+    return render(request, 'polls/detail.html', {'question': question, 'previous_choice': previous_choice, 'already_voted': already_voted})
 
-    return render(request, 'polls/detail.html', {'question': question})
