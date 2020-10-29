@@ -3,7 +3,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     """Class named Question for model."""
@@ -49,3 +49,12 @@ class Choice(models.Model):
     def __str__(self):
         """Return the choice text."""
         return self.choice_text
+
+
+class Vote(models.Model):
+    """Class named Vote for model."""
+
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+  

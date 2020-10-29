@@ -17,7 +17,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 {% if user.is_authenticated %}
-    <h2> Welcome to KU Polls!, {{ user.first_name }}</h2>
+    <h2> Welcome to KU Polls!, {{ user.username }}</h2>
     <a href="{% url 'logout' %}">Logout</a>
     {% else %}
     <h2>Welcome to KU Polls!</h2>
