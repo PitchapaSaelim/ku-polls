@@ -123,6 +123,8 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/polls/'
 
+LOGOUT_REDIRECT_URL = '/polls/'
+
 AUTHENTICATION_BACKENDS = (
     # username/password authentication
     'django.contrib.auth.backends.ModelBackend',

@@ -8,11 +8,22 @@
     li {
         color: #FF0000;
     }
+    h2 {
+        color: #339933;
+    }
 </style>
 
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+{% if user.is_authenticated %}
+    <h2> Welcome to KU Polls!, {{ user.first_name }}</h2>
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <h2>Welcome to KU Polls!</h2>
+    You can only view the result.  
+    <a href="{% url 'login' %}">Please login here.</a>
+{% endif %}
 
 {% if latest_question_list %}
     <ul>
