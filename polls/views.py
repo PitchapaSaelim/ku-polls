@@ -1,14 +1,52 @@
 """Views for polls."""
+import logging
+import logging.config
+
 from django.http import HttpResponseRedirect
+
 from django.shortcuts import get_object_or_404, render, redirect
+
 from django.urls import reverse
+
 from django.views import generic
+
 from django.utils import timezone
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 
 from .models import Vote
 from .models import Choice, Question
+
+from django.dispatch import receiver
+
+from .settings import LOGGING
+
+logging.config.dictConfig(LOGGING)
+log = logging.getLogger("polls")
+
+def get_client_ip(request):
+    """ Get the client's ip"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+@receiver(user_logged_in)
+def get_logging_user_logged_in(sender, request, user, **kwargs):
+    log.info(f"IP address: {get_client_ip(request)} USER: {user.username} - has logged in.")
+
+@receiver(user_logged_out)
+def get_logging_user_logged_out(sender, request, user, **kwargs):
+    log.info(f"IP address: {get_client_ip(request)} USER: {user.username} - has logged out.")
+
+@receiver(user_login_failed)
+def get_logging_user_login_failed(sender, request, credentials, **kwargs):
+    log.warning(f"IP address: {get_client_ip(request)} USER: {request.POST['username']} - has failed to log in.")
+
 
 class IndexView(generic.ListView):
     """Class that display index view."""
@@ -77,5 +115,6 @@ def vote_for_poll(request, pk):
         already_voted = True
     except (AttributeError):
         return render(request, 'polls/detail.html', {'question': question})
+    log.info(f"IP address: {get_client_ip(request)} USER: {request.user.username} - has voted on question id: {pk}.")
     return render(request, 'polls/detail.html', {'question': question, 'previous_choice': previous_choice, 'already_voted': already_voted})
 
