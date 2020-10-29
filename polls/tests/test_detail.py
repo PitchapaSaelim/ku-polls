@@ -7,7 +7,10 @@ from django.utils import timezone
 
 from django.urls import reverse
 
+from django.contrib.auth.models import User
+
 from polls.models import Question
+
 
 def create_question(question_text, days):
     """
@@ -37,6 +40,9 @@ class QuestionDetailViewTests(TestCase):
         """The detail view of a question with a pub_date in the past displays the question's text."""
         past_question = create_question(
             question_text='Past Question.', days=-5)
+        User.objects.create_user(username='Pitchapa', password='@jeejee19')
         url = reverse('polls:detail', args=(past_question.id,))
+        self.client.login(username='Pitchapa', password='@jeejee19')
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
