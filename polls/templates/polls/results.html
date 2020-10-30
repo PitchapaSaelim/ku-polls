@@ -25,7 +25,7 @@
         {% endfor %}</td>
         <td>
         {% for choice in question.choice_set.all %}
-            <br>{{ choice.votes }}<br>
+            <br>{{ choice.vote_set.all.count }}<br>
         {% endfor %}</td>
     </tr>
     </tbody>

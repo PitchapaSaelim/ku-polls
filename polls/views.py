@@ -94,15 +94,13 @@ def vote(request, question_id):
         })
     else:
         Vote.objects.update_or_create(user=user, question=question, defaults={'choice': selected_choice})
-        for choice in question.choice_set.all():
-            choice.votes = Vote.objects.filter(question=question).filter(choice=choice).count()
-            choice.save()
+
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-
+@login_required
 def vote_for_poll(request, pk):
     """Show error messages when the question not allowed to vote or render question detail page when it can."""
     question = get_object_or_404(Question, pk=pk)
